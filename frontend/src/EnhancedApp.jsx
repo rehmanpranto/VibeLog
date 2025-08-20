@@ -372,19 +372,6 @@ const moodOptions = [
         }}>
           {/* Welcome Section */}
           <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
-            {IS_DEMO_MODE && (
-              <div style={{
-                padding: '0.75rem 1.5rem',
-                background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                color: 'white',
-                borderRadius: '8px',
-                marginBottom: '1rem',
-                fontSize: '0.9rem',
-                fontWeight: '500'
-              }}>
-                🚀 Demo Mode - Backend not connected. Try the features!
-              </div>
-            )}
             <h2 style={{ 
               fontSize: '2rem', 
               fontWeight: '600',
