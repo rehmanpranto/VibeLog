@@ -82,7 +82,7 @@ const EnhancedVibeLog = () => {
   };
 
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  const IS_DEMO_MODE = true; // Always enable demo mode for Vercel deployment
+  const IS_DEMO_MODE = !import.meta.env.VITE_API_URL; // Only demo mode if no API URL is set
 
   // Configure axios defaults
   useEffect(() => {

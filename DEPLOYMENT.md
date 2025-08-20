@@ -37,14 +37,63 @@
 
 ## Backend Deployment
 
-### Railway/Render/Heroku
+### Railway Deployment (Recommended - Free tier available)
 
-1. **Project Settings:**
-   - **Root Directory:** `backend`
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
+1. **Create Railway Account:**
+   - Go to [railway.app](https://railway.app)
+   - Sign up with GitHub
 
-2. **Environment Variables:**
+2. **Deploy Backend:**
+   - Click "New Project" → "Deploy from GitHub repo"
+   - Select your VibeLog repository
+   - Choose "backend" folder as root directory
+
+3. **Add Database:**
+   - In Railway dashboard, click "New" → "Database" → "PostgreSQL"
+   - Railway will automatically provide DATABASE_URL
+
+4. **Environment Variables:**
+   Add these in Railway dashboard:
+   ```
+   NODE_ENV=production
+   JWT_SECRET=your_super_secret_jwt_key_here
+   OPENAI_API_KEY=your_openai_api_key_here
+   EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_USER=your_email@gmail.com
+   EMAIL_PASS=your_email_app_password
+   FRONTEND_URL=https://your-vercel-app.vercel.app
+   ```
+
+5. **Connect Frontend to Backend:**
+   - Copy your Railway backend URL (e.g., `https://your-app.up.railway.app`)
+   - In Vercel, add environment variable:
+     ```
+     VITE_API_URL=https://your-railway-app.up.railway.app/api
+     ```
+   - Redeploy frontend in Vercel
+
+### Render Deployment (Alternative)
+
+### Render Deployment (Alternative)
+
+1. **Create Render Account:**
+   - Go to [render.com](https://render.com)
+   - Connect your GitHub account
+
+2. **Deploy Backend:**
+   - New → Web Service
+   - Connect repository, select `backend` folder
+   - Settings:
+     - **Build Command:** `npm install`
+     - **Start Command:** `node index.js`
+     - **Environment:** Node
+
+3. **Add Database:**
+   - New → PostgreSQL
+   - Copy the Internal Database URL
+
+4. **Environment Variables:**
    ```
    DATABASE_URL=your_postgresql_connection_string
    JWT_SECRET=your_jwt_secret_key
