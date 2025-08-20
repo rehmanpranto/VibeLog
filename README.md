@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # VibeLog - Mood Tracking Application
 
 VibeLog is a full-stack web application that allows users to track their moods and add journal entries. This application helps users monitor their emotional patterns over time.
@@ -101,3 +102,6 @@ JWT_SECRET=your_jwt_secret_key_here
 ```
 
 Replace the placeholder values with your actual PostgreSQL credentials and a secure JWT secret.
+=======
+# VibeLog
+>>>>>>> 0162411ddade2e1880bb1a887168f9c30299a9ee

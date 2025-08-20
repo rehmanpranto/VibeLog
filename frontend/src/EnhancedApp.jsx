@@ -81,7 +81,8 @@ const EnhancedVibeLog = () => {
     setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
   };
 
-  const API_BASE = 'http://localhost:5000/api';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+  const IS_DEMO_MODE = true; // Always enable demo mode for Vercel deployment
 
   // Configure axios defaults
   useEffect(() => {
@@ -130,19 +131,28 @@ const moodOptions = [
     setError('');
     
     try {
-      const response = await axios.post(`${API_BASE}/auth/register`, {
-        username: formData.username,
-        email: formData.email,
-        password: formData.password
-      });
+      // Always use demo mode for Vercel - no backend needed
+      if (!formData.username.trim() || !formData.email.trim()) {
+        setError('Please fill in all fields');
+        setIsLoading(false);
+        return;
+      }
+
+      // Demo mode - simulate successful registration
+      const demoUser = { 
+        id: 1, 
+        username: formData.username, 
+        email: formData.email 
+      };
+      const demoToken = 'demo-token-' + Date.now();
       
-      setToken(response.data.token);
-      localStorage.setItem('vibeLogToken', response.data.token);
-      setUser(response.data.user);
+      setToken(demoToken);
+      localStorage.setItem('vibeLogToken', demoToken);
+      setUser(demoUser);
       setCurrentPage('dashboard');
-      getDailyAffirmation();
+      setDailyAffirmation("Welcome to VibeLog! Start tracking your mood today.");
     } catch (error) {
-      setError(error.response?.data?.message || 'Registration failed');
+      setError('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -151,22 +161,47 @@ const moodOptions = [
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-setError('');
+    setError('');
     
     try {
-      const response = await axios.post(`${API_BASE}/auth/login`, {
-        username: formData.username,
-        password: formData.password
-      });
+      // Always use demo mode for Vercel - no backend needed
+      if (!formData.username.trim()) {
+        setError('Please enter a username');
+        setIsLoading(false);
+        return;
+      }
+
+      // Demo mode - simulate successful login
+      const demoUser = { 
+        id: 1, 
+        username: formData.username 
+      };
+      const demoToken = 'demo-token-' + Date.now();
       
-      setToken(response.data.token);
-      localStorage.setItem('vibeLogToken', response.data.token);
-      setUser(response.data.user);
+      setToken(demoToken);
+      localStorage.setItem('vibeLogToken', demoToken);
+      setUser(demoUser);
       setCurrentPage('dashboard');
-      getMoodHistory();
-      getDailyAffirmation();
+      
+      // Set demo mood history
+      const demoHistory = [
+        {
+          id: 1,
+          mood_type: 'happy',
+          note: 'Great day at work!',
+          created_at: new Date().toISOString()
+        },
+        {
+          id: 2,
+          mood_type: 'neutral',
+          note: 'Regular day',
+          created_at: new Date(Date.now() - 86400000).toISOString()
+        }
+      ];
+      setMoodHistory(demoHistory);
+      setDailyAffirmation("Welcome to VibeLog! You're doing amazing! Keep tracking your mood journey.");
     } catch (error) {
-      setError(error.response?.data?.message || 'Login failed');
+      setError('Something went wrong. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -222,24 +257,22 @@ setError('');
     
     setIsLoading(true);
     try {
-      const response = await axios.post(`${API_BASE}/moods`, {
+      // Always use demo mode for Vercel - no backend needed
+      const newEntry = {
+        id: Date.now(),
         mood_type: selectedMood,
         note: journalEntry,
         created_at: moodDate,
-      });
+        ai_insights: "Demo mode: This is a sample AI insight about your mood pattern. Keep tracking your emotions!"
+      };
       
-      setMoodHistory([response.data, ...moodHistory]);
-      
-      // Show AI insights if available
-      if (response.data.ai_insights) {
-        setAiInsights(response.data.ai_insights);
-      }
-      
+      setMoodHistory([newEntry, ...moodHistory]);
+      setAiInsights(newEntry.ai_insights);
       setSelectedMood('');
       setJournalEntry('');
-      getDailyAffirmation();
+      setDailyAffirmation("Demo mode: You're doing great! Keep up the good work tracking your mood!");
     } catch (error) {
-      setError('Failed to log mood');
+      setError('Something went wrong logging your mood. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -339,6 +372,19 @@ setError('');
         }}>
           {/* Welcome Section */}
           <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+            {IS_DEMO_MODE && (
+              <div style={{
+                padding: '0.75rem 1.5rem',
+                background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                color: 'white',
+                borderRadius: '8px',
+                marginBottom: '1rem',
+                fontSize: '0.9rem',
+                fontWeight: '500'
+              }}>
+                🚀 Demo Mode - Backend not connected. Try the features!
+              </div>
+            )}
             <h2 style={{ 
               fontSize: '2rem', 
               fontWeight: '600',
