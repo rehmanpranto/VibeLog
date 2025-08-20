@@ -1,0 +1,15 @@
+/* Reset and basic styles for VibeLog */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  height: 100%;
+}
+
+#root {
+  height: 100vh;
+}
